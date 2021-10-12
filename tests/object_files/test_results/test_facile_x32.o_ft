@@ -1,0 +1,3 @@
+00000000 r .L.str
+00000000 T main
+         U puts

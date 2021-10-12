@@ -1,0 +1,12 @@
+00000000000001b0 T clean_exit
+00000000000002d0 T draw_in_image
+                 U exit
+                 U free
+                 U free_game_buffer
+                 U free_game_worldmap
+                 U free_sprites_images
+                 U free_textures_images
+0000000000000000 T init_game
+0000000000000120 t init_paths
+                 U mlx_destroy_window
+0000000000000330 T put_buffer_in_image
