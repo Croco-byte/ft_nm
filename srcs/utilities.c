@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/12 15:00:30 by user42            #+#    #+#             */
-/*   Updated: 2021/10/14 11:11:21 by user42           ###   ########.fr       */
+/*   Updated: 2021/10/14 12:11:19 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,14 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
 
-void	print_class(uint8_t flag)
+int	which_elf(unsigned char class)
 {
-	if (flag == ELFCLASS32)
-		printf("ELF32");
-	else if (flag == ELFCLASS64)
-		printf("ELF64");
+	if (class == ELFCLASS32)
+		return (0);
+	else if (class == ELFCLASS64)
+		return (1);
 	else
-		printf("Invalid");
+		return (-1);
 }
 
 void	print_machine(uint16_t flag)

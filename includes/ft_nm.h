@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 11:42:31 by user42            #+#    #+#             */
-/*   Updated: 2021/10/14 11:43:34 by user42           ###   ########.fr       */
+/*   Updated: 2021/10/14 12:11:29 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int			is_debug_x64(Elf64_Shdr *sec_headers, const char *sec_strtab_p,
 size_t		ft_strlen(const char *s);
 int			ft_strcmp(const char *s1, const char *s2);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
+int			which_elf(unsigned char class);
 void		print_machine(uint16_t flag);
-void		print_class(uint8_t flag);
 
 #endif

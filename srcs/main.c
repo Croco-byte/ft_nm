@@ -6,23 +6,13 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 11:43:09 by user42            #+#    #+#             */
-/*   Updated: 2021/10/12 14:59:13 by user42           ###   ########.fr       */
+/*   Updated: 2021/10/14 12:11:43 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 
 int	g_error_count = 0;
-
-int	which_elf(unsigned char class)
-{
-	if (class == ELFCLASS32)
-		return (0);
-	else if (class == ELFCLASS64)
-		return (1);
-	else
-		return (-1);
-}
 
 int	get_file_type(void *p)
 {
@@ -50,6 +40,17 @@ void	file_error(char *filename, int err_type)
 		printf("nm: %s: File format not recognized\n", filename);
 }
 
+void	small_files_errors(size_t st_size, char *filename)
+{
+	if (st_size <= 0)
+		g_error_count++;
+	else if (st_size < 4)
+	{
+		g_error_count++;
+		printf("nm: %s: File truncated\n", filename);
+	}
+}
+
 void	launch_nm(char *filename, int single_file, int readelf)
 {
 	struct stat		st;
@@ -64,6 +65,8 @@ void	launch_nm(char *filename, int single_file, int readelf)
 		printf("\n%s:\n", filename);
 	if (fstat(elf_fd, &st) != 0)
 		return (file_error(filename, 1));
+	if (st.st_size < 4)
+		return (small_files_errors(st.st_size, filename));
 	p = mmap(0, st.st_size, PROT_READ, MAP_PRIVATE, elf_fd, 0);
 	type = get_file_type(p);
 	if (type == -1)

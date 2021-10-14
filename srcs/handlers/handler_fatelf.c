@@ -6,11 +6,21 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/12 14:26:51 by user42            #+#    #+#             */
-/*   Updated: 2021/10/12 15:12:30 by user42           ###   ########.fr       */
+/*   Updated: 2021/10/14 12:10:04 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
+
+void	print_class(uint8_t flag)
+{
+	if (flag == ELFCLASS32)
+		printf("ELF32");
+	else if (flag == ELFCLASS64)
+		printf("ELF64");
+	else
+		printf("Invalid");
+}
 
 void	handle_fatelf(void *p, int readelf)
 {

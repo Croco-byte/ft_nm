@@ -16,12 +16,20 @@ printf " --- FT_NM ---\n"
 ../.././ft_nm i_dont_exist
 printf "Return value: $?\n"
 
-printf "\n> Trying to access an unauthorized file\n"
+printf "\n> Trying on an empty file\n"
 printf " --- NM ---\n"
-nm unauthorized
+nm empty
 printf "Return value: $?\n"
 printf "\n --- FT_NM ---\n"
-../.././ft_nm unauthorized
+../.././ft_nm empty
+printf "Return value: $?\n"
+
+printf "\n> Trying on a file that is less than the 4 bytes of the magic number\n"
+printf " --- NM ---\n"
+nm small
+printf "Return value: $?\n"
+printf "\n --- FT_NM ---\n"
+../.././ft_nm small
 printf "Return value: $?\n"
 
 printf "\n> Trying without arguments\n"
