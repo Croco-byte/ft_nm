@@ -5,9 +5,9 @@ $> source normalize_locale.sh
 
 
 3. En rajoutant le flag "--readelf" en dernier argument de la commande (./ft_nm <binary> --readelf), la commande effectue
-un parsing au format readelf (affichant le headerdu fichier ELF, les segments, les sections, et les symboles
+un parsing au format readelf (affichant le header du fichier ELF, les segments, les sections, et les symboles
 avec leurs attributs detailles). Je trouve qu'il s'agit d'un meilleur format, plus lisible, avec plus d'informations,
-d'o� l'ajout de cette option en bonus.
+d'ou l'ajout de cette option en bonus.
 
 
 4. Le projet concernait a l'origine le parsing des fichiers mach-o. Suite au confinement, ce n'est plus la commande "nm"
@@ -16,18 +16,15 @@ Plusieurs remarques concernant ce changement :
 
 	a.Le sujet demandait que notre commande puisse gerer les "universal binaries". Les universal binaries sont cependant
 	des fichiers specifiques a MacOS, incompatibles avec Linux. Pour coller au maximum au sujet, j'ai a la place permis
-	le parsing des fichiers FATELF, l'equivalent Linux des "universal binaries" de MacOS. La commande originelle "nm"
-	sur Linux ne gere cependant pas ces fichiers.
+	le parsing des fichiers FATELF, l'equivalent Linux des "universal binaries" de MacOS (meme si la commande originelle "nm"
+	sur Linux ne gere pas ces fichiers).
 
 
-	b. La commande "nm" pouvait être reprouite assez simplemet pour les fichiers mach-o (toutes les valeurs et les types d
+	b. La commande "nm" pouvait être reprouite assez simplemnt pour les fichiers mach-o (toutes les valeurs et les types de
 	 symboles sont explicitement contenus dans quelques fichiers header : <mach-o/loader.h>, <mach-o/fat.h>, <mach-o/ar.h>).
 	
 	Il faut cependant voir que la commande "nm" de Linux fait partie de la BFD (Binary File Descriptor Library) ;
-	elle s'appuie largement sur la parsing mis a disposition par cette librairie pour deduire le "type" du symbol par sa macro SYM_TYPE(val).
+	elle s'appuie largement sur le parsing utilise par cette librairie pour deduire le "type" du symbol par sa macro SYM_TYPE(val).
 	Il est peu realiste de re-coder entierement la BFD pour pouvoir implementer son exact parsing. La commande proposee ici utilise une autre
 	methode pour imiter le comportement de "nm" et deduire le type du symbole. Cela semble assez efficace et sur tous les binaires tests, le type
 	deduit est correct et identique a "nm" (y compris sur de gros binaires de plus de 4000 symboles).
-
-FIXME :
-> FATELF returns a "1" error code

@@ -6,44 +6,57 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/12 14:14:34 by user42            #+#    #+#             */
-/*   Updated: 2021/10/12 14:15:23 by user42           ###   ########.fr       */
+/*   Updated: 2021/10/14 11:38:51 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 
-Elf64_Shdr	*find_symtab_header_x64(Elf64_Ehdr *header, Elf64_Shdr *sec_headers, char *filename)
+Elf64_Shdr	*symtab_h_x64(Elf64_Ehdr *header, Elf64_Shdr *sec_h, char *fname)
 {
-	for (int i = 0; i < header->e_shnum; i++)
+	int	i;
+
+	i = -1;
+	while (++i < header->e_shnum)
 	{
-		if (sec_headers[i].sh_type == SHT_SYMTAB)
-			return &sec_headers[i];
+		if (sec_h[i].sh_type == SHT_SYMTAB)
+			return (&sec_h[i]);
 	}
-	printf("nm: %s: no symbols\n", filename);
+	printf("nm: %s: no symbols\n", fname);
 	return (0);
 }
 
-void		handle_elf64(void *p, char *filename, int readelf)
+int	parse_elf_x64(void *p, t_NmInfo64 *elf, char *f)
 {
-	Elf64_Ehdr	*header						= (Elf64_Ehdr *)p;
-	Elf64_Phdr	*seg_headers				= (Elf64_Phdr *)(p + header->e_phoff);
-	Elf64_Shdr	*sec_headers				= (Elf64_Shdr *)(p + header->e_shoff);
-	Elf64_Shdr	*sec_strtab_header			= &sec_headers[header->e_shstrndx];
-	const char	*sec_strtab_pointer			= p + sec_strtab_header->sh_offset;
-	Elf64_Shdr	*sec_symtab_header			= find_symtab_header_x64(header, sec_headers, filename);
-	if (!sec_symtab_header)
-		return ;
-	Elf64_Sym	*symbols					= p + sec_symtab_header->sh_offset;
-	Elf64_Shdr	*sec_sym_strtab_header		= &sec_headers[sec_symtab_header->sh_link];
-	const char	*sec_sym_strtab_pointer		= p + (sec_sym_strtab_header->sh_offset);
-	
-	if (readelf)
+	elf->header = (Elf64_Ehdr *)p;
+	elf->seg_headers = (Elf64_Phdr *)(p + elf->header->e_phoff);
+	elf->sec_headers = (Elf64_Shdr *)(p + elf->header->e_shoff);
+	elf->sec_str_h = &(elf->sec_headers[elf->header->e_shstrndx]);
+	elf->sec_str_p = p + elf->sec_str_h->sh_offset;
+	elf->symtab_header = symtab_h_x64(elf->header, elf->sec_headers, f);
+	if (!elf->symtab_header)
+		return (0);
+	elf->symbols = p + elf->symtab_header->sh_offset;
+	elf->sym_str_h = &(elf->sec_headers[elf->symtab_header->sh_link]);
+	elf->sym_str_p = p + (elf->sym_str_h->sh_offset);
+	return (1);
+}
+
+void	handle_elf64(void *p, char *filename, int readelf)
+{
+	t_NmInfo64	*parsed_elf;
+
+	parsed_elf = malloc(1 * sizeof(t_NmInfo64));
+	if (!parsed_elf)
+		exit(1);
+	if (!parse_elf_x64(p, parsed_elf, filename))
 	{
-		print_elf_header_x64(header);
-		print_program_headers_x64(header, seg_headers);
-		print_section_headers_x64(header, sec_headers, sec_strtab_pointer);
-		print_symbols_readelf_x64(sec_symtab_header, symbols, sec_sym_strtab_pointer);
+		free(parsed_elf);
+		return ;
 	}
+	if (readelf)
+		print_readelf_x64(parsed_elf);
 	else
-		print_symbols_nm_x64(sec_symtab_header, symbols, sec_sym_strtab_pointer, sec_headers, sec_strtab_pointer);
+		print_symbols_nm_x64(parsed_elf);
+	free(parsed_elf);
 }

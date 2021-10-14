@@ -1,4 +1,0 @@
-00000000 r .L.str
-00000000 T main
-         U printf
-00000000 D une_globale

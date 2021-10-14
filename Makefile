@@ -6,7 +6,7 @@
 #    By: user42 <user42@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/05 11:40:11 by user42            #+#    #+#              #
-#    Updated: 2021/10/12 15:04:44 by user42           ###   ########.fr        #
+#    Updated: 2021/10/14 11:11:59 by user42           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,18 +14,17 @@ NAME = ft_nm
 
 CC = clang
 
-CFLAGS = -Wall -Werror -Wextra -fsanitize=address -g3 -fno-omit-frame-pointer -I includes/ -I libft/includes/
+CFLAGS = -Wall -Werror -Wextra -fsanitize=address -g3 -fno-omit-frame-pointer -I includes/
 # -fsanitize=address -g3 -fno-omit-frame-pointer 
-LIBFT = -L libft -lft
 
 HEADER = ft_nm.h
 
 MAIN = main utilities
 HANDLERS = handler_x32 handler_x64 handler_fatelf
-NM32 = sym_print sym_sort sym_type
-NM64 = sym_print sym_sort sym_type
-READELF32 = header_display section_display segment_display symbol_display
-READELF64 = header_display section_display segment_display symbol_display
+NM32 = sym_print sym_sort sym_type type_helpers
+NM64 = sym_print sym_sort sym_type type_helpers
+READELF32 = display header_display section_display segment_display symbol_display
+READELF64 = display header_display section_display segment_display symbol_display
 
 SRCS =	$(addsuffix .c, $(addprefix srcs/, $(MAIN))) \
 		$(addsuffix .c, $(addprefix srcs/handlers/, $(HANDLERS))) \
@@ -39,18 +38,15 @@ OBJS = ${SRCS:.c=.o}
 all:		$(NAME)
 
 $(NAME):	$(OBJS)
-			make -C libft/
-			$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT)
+			$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
 
 %.o:%.c
 				${CC} ${CFLAGS} -c $< -o $@
 
 clean:
-				make clean -C libft
 				rm -f $(OBJS)
 
 fclean:
-				make fclean -C libft
 				rm -f $(OBJS)
 				rm -f $(NAME)
 

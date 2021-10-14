@@ -6,14 +6,14 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 11:58:54 by user42            #+#    #+#             */
-/*   Updated: 2021/10/11 22:37:41 by user42           ###   ########.fr       */
+/*   Updated: 2021/10/14 11:21:04 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ELF
-# define ELF
+#ifndef ELF_H
+# define ELF_H
 
-#include <stdint.h>
+# include <stdint.h>
 
 /* Typedefs for ELF 64 bits */
 # define Elf64_Word		uint32_t
@@ -33,48 +33,44 @@
 # define Elf32_Xword	uint64_t
 # define Elf32_Section	uint16_t
 
-
-
 /* ==== ELF HEADER ==== */
 
-/* Header structure */
 typedef struct {
-	unsigned char		e_ident[16];			// Magic number and general info
-	Elf64_Half			e_type;					// Object file type
-	Elf64_Half			e_machine;				// Architecture
-	Elf64_Word			e_version;				// Object file version
-	Elf64_Addr			e_entry;				// Entry point virtual address
-	Elf64_Off			e_phoff;				// Program header table offset
-	Elf64_Off			e_shoff;				// Section header table offset
-	Elf64_Word			e_flags;				// Processor-specific flags
-	Elf64_Half			e_ehsize;				// ELF header size in bytes
-	Elf64_Half			e_phentsize;			// Program header table size
-	Elf64_Half			e_phnum;				// Program header table count
-	Elf64_Half			e_shentsize;			// Section header table size
-	Elf64_Half			e_shnum;				// Section header table count
-	Elf64_Half			e_shstrndx;				// Section header string table index
+	unsigned char		e_ident[16];
+	Elf64_Half			e_type;
+	Elf64_Half			e_machine;
+	Elf64_Word			e_version;
+	Elf64_Addr			e_entry;
+	Elf64_Off			e_phoff;
+	Elf64_Off			e_shoff;
+	Elf64_Word			e_flags;
+	Elf64_Half			e_ehsize;
+	Elf64_Half			e_phentsize;
+	Elf64_Half			e_phnum;
+	Elf64_Half			e_shentsize;
+	Elf64_Half			e_shnum;
+	Elf64_Half			e_shstrndx;
 }						Elf64_Ehdr;
 
 typedef struct {
-	unsigned char		e_ident[16];			// Magic number and general info
-	Elf32_Half			e_type;					// Object file type
-	Elf32_Half			e_machine;				// Architecture
-	Elf32_Word			e_version;				// Object file version
-	Elf32_Addr			e_entry;				// Entry point virtual address
-	Elf32_Off			e_phoff;				// Program header table offset
-	Elf32_Off			e_shoff;				// Section header table offset
-	Elf32_Word			e_flags;				// Processor-specific flags
-	Elf32_Half			e_ehsize;				// ELF header size in bytes
-	Elf32_Half			e_phentsize;			// Program header table size
-	Elf32_Half			e_phnum;				// Program header table count
-	Elf32_Half			e_shentsize;			// Section header table size
-	Elf32_Half			e_shnum;				// Section header table count
+	unsigned char		e_ident[16];
+	Elf32_Half			e_type;
+	Elf32_Half			e_machine;
+	Elf32_Word			e_version;
+	Elf32_Addr			e_entry;
+	Elf32_Off			e_phoff;
+	Elf32_Off			e_shoff;
+	Elf32_Word			e_flags;
+	Elf32_Half			e_ehsize;
+	Elf32_Half			e_phentsize;
+	Elf32_Half			e_phnum;
+	Elf32_Half			e_shentsize;
+	Elf32_Half			e_shnum;
 	Elf32_Half			e_shstrndx;	
 }						Elf32_Ehdr;
 
 /* EI_IDENT */
 
-// Indexes
 # define EI_MAG0					0
 # define EI_MAG1					1
 # define EI_MAG2					2
@@ -84,24 +80,24 @@ typedef struct {
 # define EI_VERSION					6
 # define EI_OSABI					7
 # define EI_PAD						8
-// ELF Magic section [0 - 3] values
+
 # define ELFMAG0					0x7f
 # define ELFMAG1					'E'
 # define ELFMAG2					'L'
 # define ELFMAG3					'F'
 # define ELFMAG						"\177ELF"
-// ELF Class section [4] values
-# define ELFCLASSNONE				0		// Invalid
-# define ELFCLASS32					1		// 32 bits ELF binary
-# define ELFCLASS64					2		// 64 bits ELF binary
-// ELF Data section [5] values
-# define ELFDATANONE				0		// Invalid
-# define ELFDATA2LSB				1		// Little-endian
-# define ELFDATA2MSB				2		// Big-endian
-// ELF Version section [6] values
+
+# define ELFCLASSNONE				0
+# define ELFCLASS32					1
+# define ELFCLASS64					2
+
+# define ELFDATANONE				0
+# define ELFDATA2LSB				1
+# define ELFDATA2MSB				2
+
 # define EV_NONE					0
 # define EV_CURRENT					1
-// ELF OSABI section [7] values
+
 # define ELFOSABI_SYSV				0
 # define ELFOSABI_HPUX				1
 # define ELFOSABI_NETBSD			2
@@ -117,16 +113,12 @@ typedef struct {
 # define ELFOSABI_ARM				97
 # define ELFOSABI_STANDALONE		255
 
+# define ET_NONE					0
+# define ET_REL						1
+# define ET_EXEC					2
+# define ET_DYN						3
+# define ET_CORE					4
 
-/* E_TYPE */
-# define ET_NONE					0			// Invalid
-# define ET_REL						1			// .o object files
-# define ET_EXEC					2			// binaries
-# define ET_DYN						3			// .so shared object
-# define ET_CORE					4			// .ko core file
-
-
-/* E_MACHINE */
 # define EM_NONE					0
 # define EM_SPARC					2
 # define EM_386						3
@@ -134,8 +126,6 @@ typedef struct {
 # define EM_ARM						40
 # define EM_x86_64					62
 
-
-/* E_VERSION */
 # define EV_NONE					0
 # define EV_CURRENT					1
 
@@ -143,7 +133,6 @@ typedef struct {
 
 /* ==== PROGRAM HEADERS ==== */
 
-/* Segment header structure */
 typedef struct {
 	Elf64_Word			p_type;
 	Elf64_Word			p_flags;
@@ -166,7 +155,6 @@ typedef struct {
 	Elf32_Word			p_align;
 }						Elf32_Phdr;
 
-/* Legal values for p_type (segment type) */
 # define PT_NULL			0
 # define PT_LOAD			1
 # define PT_DYNAMIC			2
@@ -181,15 +169,12 @@ typedef struct {
 # define PT_GNU_STACK		0x6474e551
 # define PT_GNU_RELRO		0x6474e552
 
-/* Legal values for p_flags (segment flags) */
 # define PF_X			(1 << 0)
 # define PF_W			(1 << 1)
 # define PF_R			(1 << 2)
 
 
 /* ==== SECTION HEADERS ==== */
-
-/* Section header structure */
 
 typedef struct
 {
@@ -219,7 +204,6 @@ typedef struct
 	Elf32_Word			sh_entsize;
 }						Elf32_Shdr;
 
-/* Legal values for sh_type */
 # define SHT_NULL				0
 # define SHT_PROGBITS			1
 # define SHT_SYMTAB				2
@@ -246,18 +230,17 @@ typedef struct
 # define SHT_GNU_verneed		0x6ffffffe
 # define SHT_GNU_versym			0x6fffffff
 
-/* Legal values for sh_flags (section flags) */
 # define SHF_WRITE				(1 << 0)
 # define SHF_ALLOC				(1 << 1)
 # define SHF_EXECINSTR			(1 << 2)
 # define SHF_MERGE				(1 << 4)
 # define SHF_STRINGS			(1 << 5)
-# define SHF_INFO_LINK			(1 << 6)		/* SHT index */
-# define SHF_LINK_ORDER			(1 << 7)		/* Preserve order after combining */
-# define SHF_OS_NONCONFORMING	(1 << 8)		/* Non-standard OS specific handling required */
-# define SHF_GROUP				(1 << 9)		/* Section is member of a group.  */
-# define SHF_TLS				(1 << 10)		/* Section hold thread-local data.  */
-# define SHF_COMPRESSED			(1 << 11)		/* Section with compressed data. */
+# define SHF_INFO_LINK			(1 << 6)
+# define SHF_LINK_ORDER			(1 << 7)
+# define SHF_OS_NONCONFORMING	(1 << 8)
+# define SHF_GROUP				(1 << 9)
+# define SHF_TLS				(1 << 10)
+# define SHF_COMPRESSED			(1 << 11)
 
 
 /* ==== SYMBOL STRUCTURES ==== */
@@ -282,7 +265,6 @@ typedef struct
 	Elf32_Section		st_shndx;
 }						Elf32_Sym;
 
-/* How to extract and insert information held in the st_info field */
 # define ELF32_ST_BIND(val)			(((unsigned char) (val)) >> 4)
 # define ELF32_ST_TYPE(val)			((val) & 0xf)
 # define ELF32_ST_INFO(bind, type)	(((bind) << 4) + ((type) & 0xf))
@@ -291,40 +273,37 @@ typedef struct
 # define ELF64_ST_TYPE(val)			ELF32_ST_TYPE(val)
 # define ELF64_ST_INFO(bind, type)	ELF32_ST_INFO((bind), (type))
 
-/* Legal values for ST_BIND subfield of st_info (symbol binding) */
-# define STB_LOCAL					0				/* Local symbol */
-# define STB_GLOBAL					1				/* Global symbol */
-# define STB_WEAK					2				/* Weak symbol */
-# define STB_NUM					3				/* Number of defined types.  */
-# define STB_LOOS					10				/* Start of OS-specific */
-# define STB_GNU_UNIQUE				10				/* Unique symbol.  */
-# define STB_HIOS					12				/* End of OS-specific */
-# define STB_LOPROC					13				/* Start of processor-specific */
-# define STB_HIPROC					15				/* End of processor-specific */
+# define STB_LOCAL					0
+# define STB_GLOBAL					1
+# define STB_WEAK					2
+# define STB_NUM					3
+# define STB_LOOS					10
+# define STB_GNU_UNIQUE				10
+# define STB_HIOS					12
+# define STB_LOPROC					13
+# define STB_HIPROC					15
 
-/* Legal values for ST_TYPE subfield of st_info (symbol type) */
-# define STT_NOTYPE					0				/* Symbol type is unspecified */
-# define STT_OBJECT					1				/* Symbol is a data object */
-# define STT_FUNC					2				/* Symbol is a code object */
-# define STT_SECTION				3				/* Symbol associated with a section */
-# define STT_FILE					4				/* Symbol's name is file name */
-# define STT_COMMON					5				/* Symbol is a common data object */
-# define STT_TLS					6				/* Symbol is thread-local data object*/
-# define STT_NUM					7				/* Number of defined types.  */
-# define STT_LOOS					10				/* Start of OS-specific */
-# define STT_GNU_IFUNC				10				/* Symbol is indirect code object */
-# define STT_HIOS					12				/* End of OS-specific */
-# define STT_LOPROC					13				/* Start of processor-specific */
-# define STT_HIPROC					15				/* End of processor-specific */
+# define STT_NOTYPE					0
+# define STT_OBJECT					1
+# define STT_FUNC					2
+# define STT_SECTION				3
+# define STT_FILE					4
+# define STT_COMMON					5
+# define STT_TLS					6
+# define STT_NUM					7
+# define STT_LOOS					10
+# define STT_GNU_IFUNC				10
+# define STT_HIOS					12
+# define STT_LOPROC					13
+# define STT_HIPROC					15
 
-/* How to extract and insert information held in the st_other field (symbol visibility) */
 # define ELF32_ST_VISIBILITY(o)		((o) & 0x03)
 # define ELF64_ST_VISIBILITY(o)		ELF32_ST_VISIBILITY(o)
 
-#define STV_DEFAULT					0				/* Default symbol visibility rules */
-#define STV_INTERNAL				1				/* Processor specific hidden class */
-#define STV_HIDDEN					2				/* Sym unavailable in other modules */
-#define STV_PROTECTED				3				/* Not preemptible, not exported */
+#define STV_DEFAULT					0
+#define STV_INTERNAL				1
+#define STV_HIDDEN					2
+#define STV_PROTECTED				3
 
 
 
@@ -334,11 +313,11 @@ typedef struct
 
 typedef struct FATELF_record
 {
-	uint16_t				machine;			/* maps to e_machine. */
-	uint8_t					osabi;				/* maps to e_ident[EI_OSABI]. */ 
-	uint8_t					osabi_version;		/* maps to e_ident[EI_ABIVERSION]. */
-	uint8_t					word_size;			/* maps to e_ident[EI_CLASS]. */
-	uint8_t					byte_order;			/* maps to e_ident[EI_DATA]. */
+	uint16_t				machine;
+	uint8_t					osabi;
+	uint8_t					osabi_version;
+	uint8_t					word_size;
+	uint8_t					byte_order;
 	uint8_t					reserved0;
 	uint8_t					reserved1;
 	uint64_t				offset;
@@ -347,25 +326,10 @@ typedef struct FATELF_record
 
 typedef struct
 {
-	uint32_t				magic;				/* always FATELF_MAGIC */
-	uint16_t				version;			/* latest is always FATELF_FORMAT_VERSION */
+	uint32_t				magic;
+	uint16_t				version;
 	uint8_t					num_records;
 	uint8_t					reserved0;
-	FATELF_record			records[0];			/* this is actually num_records items. */
+	FATELF_record			records[0];
 }							FATELF_header;
-
-
-
-
-
-
 #endif
-
-
-/*
-Missing NM types :
-	> G / g	("initialized data section for small objects")
-	> S / s ("uninitialized / 0-initialized data section for small objects")
-	> I		("indirect symbol")
-	> p (stack unwind section : .eh_frame et .eh_frame_hdr semblent traitées comme des data section)
-*/

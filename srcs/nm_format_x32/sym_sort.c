@@ -6,15 +6,16 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/11 17:14:41 by user42            #+#    #+#             */
-/*   Updated: 2021/10/11 17:15:02 by user42           ###   ########.fr       */
+/*   Updated: 2021/10/14 11:25:10 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 
-void	swap_symbols_x32(SymHolder32 *first, SymHolder32 *second)
+void	swap_symbols_x32(t_SymHolder32 *first, t_SymHolder32 *second)
 {
-	SymHolder32	temp;
+	t_SymHolder32	temp;
+
 	temp.skip = first->skip;
 	temp.value = first->value;
 	temp.type = first->type;
@@ -29,15 +30,23 @@ void	swap_symbols_x32(SymHolder32 *first, SymHolder32 *second)
 	second->name = temp.name;
 }
 
-void	sort_symbols_x32(SymHolder32 *holders, int sym_num)
+void	sort_symbols_x32(t_SymHolder32 *holders, int sym_num)
 {
-	for(int j=1; j < sym_num; j++)
+	int	i;
+	int	j;
+
+	j = 0;
+	while (++j < sym_num)
 	{
-		for (int i=j+1; i < sym_num; i++)
+		i = j;
+		while (++i < sym_num)
 		{
-			if (holders[j].name[0] != '\0' && holders[i].name[0] != '\0' && ft_strcmp(holders[j].name, holders[i].name) > 0)
+			if (holders[j].name[0] != '\0' && holders[i].name[0] != '\0'
+				&& ft_strcmp(holders[j].name, holders[i].name) > 0)
 				swap_symbols_x32(&holders[j], &holders[i]);
-			if (holders[j].name[0] != '\0' && holders[i].name[0] != '\0' && ft_strcmp(holders[j].name, holders[i].name) == 0 && holders[i].value < holders[j].value)
+			if (holders[j].name[0] != '\0' && holders[i].name[0] != '\0'
+				&& ft_strcmp(holders[j].name, holders[i].name) == 0
+				&& holders[i].value < holders[j].value)
 				swap_symbols_x32(&holders[j], &holders[i]);
 		}
 	}
