@@ -12,9 +12,9 @@
 
 NAME = ft_nm
 
-CC = clang
+CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra -fsanitize=address -g3 -fno-omit-frame-pointer -I includes/
+CFLAGS = -Wall -Werror -Wextra -I includes/
 # -fsanitize=address -g3 -fno-omit-frame-pointer 
 
 HEADER = ft_nm.h
